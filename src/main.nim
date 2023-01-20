@@ -29,16 +29,6 @@ func calcPercentIf(num: float): string =
     return "XXXXXXXXX0"
   return "XXXXXXXXXX"
 
-
-# 0.1 => int(10/10) = 1
-func calcPercentMath(num: float): string = 
-  result = "0000000000"
-  if num > 1.0:
-    return "XXXXXXXXXX"
-  for i in 0..<int(num*10):
-    result[i] = 'X'
-
-
 const percentConstants = [
   "0000000000",
   "X000000000",
@@ -50,6 +40,7 @@ const percentConstants = [
   "XXXXXXX000",
   "XXXXXXXX00",
   "XXXXXXXXX0",
+  "XXXXXXXXXX"
 ]
 
 func calcPercentMathConst(num: float): string = 
@@ -67,10 +58,10 @@ suite "test":
     check: calcPercentIf(0.2) == "XX00000000"
     check: calcPercentIf(1.0) == "XXXXXXXXXX"
   test "calcPercentMath":
-    check: calcPercentMath(0.0) == "0000000000"
-    check: calcPercentMath(0.1) == "X000000000"
-    check: calcPercentMath(0.2) == "XX00000000"
-    check: calcPercentMath(1.0) == "XXXXXXXXXX"
+    check: calcPercentMathConst(0.0) == "0000000000"
+    check: calcPercentMathConst(0.1) == "X000000000"
+    check: calcPercentMathConst(0.2) == "XX00000000"
+    check: calcPercentMathConst(1.0) == "XXXXXXXXXX"
 
 when isMainModule:
   const runs = 10
@@ -79,10 +70,6 @@ when isMainModule:
   timeIt("if", runs):
     for i in 0..counts:
       keep calcPercentIf(rand(0.0..1.0))
-
-  timeit("math", runs):
-    for i in 0..counts:
-      keep calcPercentMath(rand(0.0..1.0))
 
   timeit("mathConst", runs):
     for i in 0..counts:

@@ -21,24 +21,25 @@ pub fn percentIf(num: f64) []const u8 {
         return "XXXXXXXX00";
     if (num > 0.8 and num <= 0.9)
         return "XXXXXXXXX0";
-    return "XXXXXXXXX";
+    return "XXXXXXXXXX";
 }
 const percentConst = [_][]const u8{
     "0000000000",
     "X000000000",
     "XX00000000",
-    "XXX000000",
-    "XXXX00000",
-    "XXXXX0000",
-    "XXXXXX000",
-    "XXXXXXX00",
-    "XXXXXXXX0",
-    "XXXXXXXXX",
+    "XXX0000000",
+    "XXXX000000",
+    "XXXXX00000",
+    "XXXXXX0000",
+    "XXXXXXX000",
+    "XXXXXXXX00",
+    "XXXXXXXXX0",
+    "XXXXXXXXXX",
 };
 
 pub fn percentMathConst(num: f64) []const u8 {
     if (num >= 1.0) {
-        return "XXXXXXXXX";
+        return "XXXXXXXXXX";
     }
     return percentConst[(@floatToInt(u32, num * 10))];
 }

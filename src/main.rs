@@ -16,9 +16,9 @@ const PERCENT_CONSTS: [&str; 11] = [
 ];
 
 fn percent_math_const<'a>(num: f64) -> &'a str {
-    //if num >= 1.0 {
-    //    return PERCENT_CONSTS[10];
-    //}
+    if num >= 1.0 {
+        return PERCENT_CONSTS[10];
+    }
     return PERCENT_CONSTS[(num * 10.0) as usize];
 }
 
