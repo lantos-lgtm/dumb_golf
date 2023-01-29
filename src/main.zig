@@ -1,5 +1,7 @@
 const std = @import("std");
 
+const MAX_COUNT = 10_000_000;
+
 pub fn percentIf(num: f64) []const u8 {
     if (num == 0)
         return "0000000000";
@@ -48,15 +50,10 @@ pub fn runPercentMathConst() []const u8 {
     var seed = @bitCast(u64, std.time.microTimestamp());
     var prng = std.rand.DefaultPrng.init(seed);
     const rand = prng.random();
-    const count = 10_000_000;
-    var i: usize = 0;
     var myString: []const u8 = undefined;
-    while (true) {
-        if (i > count) {
-            break;
-        }
+    var i: usize = 0;
+    while (i < MAX_COUNT) : (i += 1) {
         myString = percentMathConst(rand.float(f64));
-        i += 1;
     }
     return myString;
 }
@@ -65,11 +62,10 @@ pub fn runPercentIf() []const u8 {
     var seed = @bitCast(u64, std.time.microTimestamp());
     var prng = std.rand.DefaultPrng.init(seed);
     const rand = prng.random();
-    const count = 10_000_000;
-    var i: usize = 0;
     var myString: []const u8 = undefined;
+    var i: usize = 0;
     while (true) {
-        if (i > count) {
+        if (i > MAX_COUNT) {
             break;
         }
         myString = percentIf(rand.float(f64));
@@ -77,23 +73,17 @@ pub fn runPercentIf() []const u8 {
     }
     return myString;
 }
-pub fn main() !void {
-    var startTime = std.time.nanoTimestamp();
-    var data = runPercentMathConst();
-    var duration = std.time.nanoTimestamp() - startTime;
-    std.debug.print("Time: {d}ns\n", .{duration});
-    std.debug.print("string: {s}\n", .{data});
 
-    startTime = std.time.nanoTimestamp();
-    data = runPercentIf();
-    duration = std.time.nanoTimestamp() - startTime;
-    std.debug.print("Time: {d}ns\n", .{duration});
-    std.debug.print("string: {s}\n", .{data});
+fn bench(comptime func: fn () []const u8) []const u8 {
+    var start = std.time.microTimestamp();
+    var result = func();
+    var end = std.time.microTimestamp();
+    var elapsed = end - start;
+    std.debug.print("Elapsed: {d}us\n", .{@intToFloat(f64, elapsed) / std.time.us_per_s});
+    return result;
 }
 
-test "simple test" {
-    var list = std.ArrayList(i32).init(std.testing.allocator);
-    defer list.deinit(); // try commenting this out and see if zig detects the memory leak!
-    try list.append(42);
-    try std.testing.expectEqual(@as(i32, 42), list.pop());
+pub fn main() !void {
+    std.debug.print("percentIf: {s}\n", .{bench(runPercentIf)});
+    std.debug.print("mathConst: {s}\n", .{bench(runPercentMathConst)});
 }
