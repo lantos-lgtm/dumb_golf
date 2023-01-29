@@ -51,43 +51,43 @@ func calcPercentMathConst(num: float): string =
 func calcPercentMathConstPtr(num: float): ptr string =
   return percentConstants[int(num * 10)].unsafeAddr
 
-#suite "test":
-#  test "calcPercentIf":
-#    check: calcPercentIf(0.0) == "0000000000"
-#    check: calcPercentIf(0.1) == "X000000000"
-#    check: calcPercentIf(0.2) == "XX00000000"
-#    check: calcPercentIf(1.0) == "XXXXXXXXXX"
-#  test "calcPercentMath":
-#    check: calcPercentMathConst(0.0) == "0000000000"
-#    check: calcPercentMathConst(0.1) == "X000000000"
-#    check: calcPercentMathConst(0.2) == "XX00000000"
-#    check: calcPercentMathConst(1.0) == "XXXXXXXXXX"
-#
-#when isMainModule:
-#  const runs = 10
-#  const counts = 10_000_000
-#  randomize()
-#  timeIt("if", runs):
-#    for i in 0..counts:
-#      keep calcPercentIf(rand(0.0..1.0))
-#
-#  timeit("mathConst", runs):
-#    for i in 0..counts:
-#      keep calcPercentMathConst(rand(0.0..1.0))
-#
-#  timeit("mathConstPtr", runs):
-#    for i in 0..counts:
-#      keep calcPercentMathConstPtr(rand(0.0..1.0))[]
-#
-#
-when isMainModule:
-  const count = 10_000_000
-  var i = 0
-  var myString: ptr string
-  randomize()
-  while i < count:
-    myString = calcPercentMathConstPtr(rand(0.0..1.0))
-    i.inc()
-  echo myString[]
+suite "test":
+  test "calcPercentIf":
+    check: calcPercentIf(0.0) == "0000000000"
+    check: calcPercentIf(0.1) == "X000000000"
+    check: calcPercentIf(0.2) == "XX00000000"
+    check: calcPercentIf(1.0) == "XXXXXXXXXX"
+  test "calcPercentMath":
+    check: calcPercentMathConst(0.0) == "0000000000"
+    check: calcPercentMathConst(0.1) == "X000000000"
+    check: calcPercentMathConst(0.2) == "XX00000000"
+    check: calcPercentMathConst(1.0) == "XXXXXXXXXX"
 
+when isMainModule:
+  const runs = 10
+  const counts = 10_000_000
+  randomize()
+  timeIt("if", runs):
+    for i in 0..counts:
+      keep calcPercentIf(rand(0.0..1.0))
+
+  timeit("mathConst", runs):
+    for i in 0..counts:
+      keep calcPercentMathConst(rand(0.0..1.0))
+
+  timeit("mathConstPtr", runs):
+    for i in 0..counts:
+      keep calcPercentMathConstPtr(rand(0.0..1.0))[]
+
+
+#when isMainModule:
+#  const count = 10_000_000
+#  var i = 0
+#  var myString: ptr string
+#  randomize()
+#  while i < count:
+#    myString = calcPercentMathConstPtr(rand(0.0..1.0))
+#    i.inc()
+#  echo myString[]
+#
 
